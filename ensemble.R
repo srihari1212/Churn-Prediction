@@ -21,10 +21,10 @@ cat ("Column which has null value :" , list_na)
 #Mean imputation
 #install.packages("Hmisc")
 #install.packages("mice")
-library(mice)
-library(Hmisc)
-library(plyr)
-library(ggplot2)
+library(mice) 
+library(Hmisc) 
+library(plyr) #to split the data
+library(ggplot2) #creating visualization by mapping the variables
 #library(Hmisc)
 class(churn_data$TotalCharges)
 churn_data$TotalCharges <- impute(churn_data$TotalCharges,mean)
@@ -76,7 +76,7 @@ corr_matrix <- cor(churn_data[,numeric_var])
 #install.packages("randomForest")
 library(corrplot)
 library(e1071)
-library(caret)
+library(caret) # classification and regression training
 library(randomForest)
 corrplot(corr_matrix, main="\n\nCorrelation Plot for Numerical Variables", method="number")
 
@@ -186,7 +186,7 @@ knnaccuracy <- knncm$overall[c(1,3,4)]
 #---------------------------------SVM------------------------------------------------
 grid <- expand.grid(C = c(0.01, 0.05, 0.1, 0.25, 0.5, 1))
 #install.packages("kernlab")
-library(kernlab)
+library(kernlab) 
 svm_linear_model <- train(Churn ~., data = churn_data, method = "svmLinear",
                           trControl= fitControl,
                           preProcess = c("center", "scale"),
@@ -228,25 +228,11 @@ lra = confusionMatrix(test_data$pred_avg,test_churn)
 lraccuracy <-lr$overall[c(1,3,4)]
 lraccuracy
 averaging_accuracy = lraccuracy
-
-
-
-#------------------------------------Weighted Average----------------------------------------------
-# 
-# test_data$pred_avg_weighted<-((test_data$gbm_prob$Yes*0.30) + (test_data$rf_prob$Yes*0.25)  + (test_data$glm_prob$Yes*0.75) +(test_data$lassoR$Yes*0.77) +(test_data$Elastic$Yes*0.75))/4
-# test_data$pred_avg_weighted
-# test_data$pred_avg_weighted<-as.factor(ifelse(test_data$pred_avg_weighted>0.5,'Yes','No'))
-# test_data$pred_avg_weighted
-# lra = confusionMatrix(test_data$pred_avg_weighted,test_churn)
-# lraccuracy <-lr$overall[c(1,3,4)]
-# weighted_avg_accuracy = lraccuracy
-
 #--------------------------------------Accuarcy------------------------------------------------------
 models <- c("Logistic", "Random Forest", "Elastic Net", "Ridge Lasso","gradient Boosting","Averaging")
 #install.packages("dplyr")
 library(dplyr)
 accuracysummary <- bind_rows(Logistic = lraccuracy, RandomForest = rf_accuracy,ElasticNet = glmnetaccuracy, Ridge_Lasso = glm_accuracy , Gradient_Boosting = gbm_accuracy , Averaging = averaging_accuracy )
-library(tibble)
 accuracysummary2 <- add_column(accuracysummary, "Model" = models, .before = "Accuracy")
 accuracysummary2
 
