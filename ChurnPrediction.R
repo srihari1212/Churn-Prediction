@@ -1,5 +1,5 @@
 #churn_data<-read.csv("Z:/Statistical learning/package/churn_pred_data.csv", header=T, na.strings=c("","NA"))
-churn_data<-read.csv("E:/semester 5/churn predictionj/sis project/WA_Fn-UseC_-Telco-Customer-Churn.csv", header=T, na.strings=c("","NA"))
+churn_data<-read.csv("E:/semester 5/churn predictionj/WA_Fn-UseC_-Telco-Customer-Churn.csv", header=T, na.strings=c("","NA"))
 attach(churn_data)
 #-----------------------------------------------------------------
 #Data overview :
